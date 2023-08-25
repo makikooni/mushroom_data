@@ -5,16 +5,19 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 df = pd.read_csv("mushroom_data.csv")
-print(df.head())
 
 def plot_graphs(df):
     output_directory = "/Users/makikooni/Github/mushroom_data/Figures"
     columns = df.columns.tolist()
     for column in columns:
-        sns.countplot(data=df, x=column)
+        plt.figure(figsize=(10, 6))
+        sns.countplot(data=df, x=column, order=df[column].value_counts().index)
+        plt.title(column + " Value Counts")
+        plt.xticks(rotation=30, fontsize=10)
+        plt.xlabel(column, fontsize=12)
         output_filename = os.path.join(output_directory, f"{column}_countplot.png")
+        plt.tight_layout()
         plt.savefig(output_filename)
-        #plt.show()
         plt.close()
 
 def find_modes(df,column_choice):
@@ -34,5 +37,6 @@ def find_modes(df,column_choice):
     
     return mode_values
 
+plot_graphs(df)
 find_modes(df,'Habitat')
 #python3 /Users/makikooni/Github/mushroom_data/source.py
