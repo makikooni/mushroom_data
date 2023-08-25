@@ -1,14 +1,16 @@
-""" source: https://www.kaggle.com/datasets/uciml/mushroom-classification """
+""" source of data: https://www.kaggle.com/datasets/uciml/mushroom-classification """
 import os
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 df = pd.read_csv("mushroom_data.csv")
+columns = df.columns.tolist()
 
 def plot_graphs(df):
     output_directory = "/Users/makikooni/Github/mushroom_data/Figures"
     columns = df.columns.tolist()
+    
     
     unique_palette = sns.color_palette("Set2", n_colors=len(columns)) 
     sns.set_palette(unique_palette)
@@ -61,6 +63,4 @@ def find_modes(df,column_choice):
     
     return mode_values
 
-plot_graphs(df)
 find_modes(df,'Habitat')
-#python3 /Users/makikooni/Github/mushroom_data/source.py
