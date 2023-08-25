@@ -9,12 +9,36 @@ df = pd.read_csv("mushroom_data.csv")
 def plot_graphs(df):
     output_directory = "/Users/makikooni/Github/mushroom_data/Figures"
     columns = df.columns.tolist()
+    
+    unique_palette = sns.color_palette("Set2", n_colors=len(columns)) 
+    sns.set_palette(unique_palette)
+    
     for column in columns:
         plt.figure(figsize=(10, 6))
-        sns.countplot(data=df, x=column, order=df[column].value_counts().index)
-        plt.title(column + " Value Counts")
-        plt.xticks(rotation=30, fontsize=10)
-        plt.xlabel(column, fontsize=12)
+        unique_values = df[column].nunique()
+        value_counts = df[column].value_counts()
+        
+        if unique_values >= 5 or max(value_counts) / sum(value_counts) > 0.9:
+            sns.countplot(data=df, x=column, order=df[column].value_counts().index)
+            plt.title(column + " Value Counts")
+            plt.xticks(rotation=30, fontsize=10)
+            plt.xlabel(column, fontsize=12)
+            
+
+            for i, count in enumerate(value_counts):
+                plt.text(i, count + 10, str(count), ha='center', fontsize=10)
+                
+        else:
+            value_counts = df[column].value_counts()
+            pie_chart = plt.pie(value_counts, labels=value_counts.index, startangle=140)
+            plt.title(column + " Value Distribution")
+            
+            percentages = [f"{(val / sum(value_counts)) * 100:.1f}%" for val in value_counts]
+            legend_labels = [f"{index} - {percentage}" for index, percentage in zip(value_counts.index, percentages)]
+            
+            plt.legend(pie_chart[0], legend_labels, loc="upper right", bbox_to_anchor=(1.3,1 ))
+        
+            
         output_filename = os.path.join(output_directory, f"{column}_countplot.png")
         plt.tight_layout()
         plt.savefig(output_filename)
