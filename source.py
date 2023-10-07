@@ -1,4 +1,8 @@
-""" source of data: https://www.kaggle.com/datasets/uciml/mushroom-classification """
+""" source of data: https://www.kaggle.com/datasets/uciml/mushroom-classification 
+This dataset includes descriptions of hypothetical samples corresponding to 23 species
+of gilled mushrooms in the Agaricus and Lepiota Family Mushroom drawn from The Audubon
+Society Field Guide to North American Mushrooms (1981). 
+"""
 import os
 import pandas as pd
 import seaborn as sns
@@ -6,6 +10,7 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv("mushroom_data.csv")
 columns = df.columns.tolist()
+print(df.isnull().sum())
 
 def plot_graphs(df):
     output_directory = "/Users/makikooni/Github/mushroom_data/Figures"
@@ -63,4 +68,4 @@ def find_modes(df,column_choice):
     
     return mode_values
 
-find_modes(df,'Habitat')
+#find_modes(df,'Habitat')
